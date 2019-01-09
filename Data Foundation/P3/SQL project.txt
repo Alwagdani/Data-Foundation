@@ -1,0 +1,39 @@
+/* Query 1- query used for first insight*/
+select MediaType.name, Invoice.BillingCountry , count (Invoice.Total)
+from MediaType
+join Track on MediaType.MediaTypeId=Track.MediaTypeId
+join InvoiceLine on Track.TrackId= InvoiceLine.TrackId
+join Invoice on Invoice.InvoiceId = InvoiceLine.InvoiceId
+where Invoice.BillingCountry= "Canada"
+group by MediaType.Name
+
+
+/* Query 2-- query used for second insight*/
+select Employee.*,  count(invoice.invoiceid)
+from employee 
+	join customer  on employee.employeeid = customer.supportrepid
+	join invoice  on invoice.customerid = customer.customerid
+group by employee.employeeid
+
+/* Query 3- query used for third insight*/
+
+select Invoice.billingcountry, sum(Invoice.Total), Employee.FirstName
+from InvoiceLine
+join Invoice on Invoice.InvoiceId= InvoiceLine.InvoiceId
+join Customer on Customer.CustomerId= Invoice.CustomerId
+join Employee on Employee.EmployeeId = Customer.SupportRepId 
+where Invoice.BillingCountry= 'USA' or Invoice.BillingCountry='Canada' or Invoice.BillingCountry='Brazil'
+group by 1,3
+order by 2 desc
+
+/* Query 4- query used for forth insight*/
+
+select *, count(trackid)
+from playlisttrack 
+join playlist on playlisttrack.playlistid = playlist.playlistid
+group by playlist.playlistid
+order by count(trackid)
+desc
+limit 10
+
+
